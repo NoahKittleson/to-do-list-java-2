@@ -1,47 +1,59 @@
 import java.util.ArrayList;
+import java.util.List;
+import org.sql2o.*;
 
 public class Category {
-  private String mName;
-  private static ArrayList<Category> instances = new ArrayList<Category>();
-  private int mId;
-  private ArrayList<Task> mTasks;
+  private String name;
+  private int id;
+  // private ArrayList<Task> mTasks;
 
   public Category(String name) {
-    mName = name;
-    instances.add(this);
-    mId = instances.size();
-    mTasks = new ArrayList<Task>();
+    this.name = name;
+    // mTasks = new ArrayList<Task>();
   }
 
-  public String getName(){
-    return mName;
-  }
-
-  public static ArrayList<Category> all() {
-    return instances;
-  }
-
-  public static void clear() {
-    instances.clear();
-  }
-
-  public int getId() {
-    return mId;
-  }
-
-  public static Category find(int id) {
-    try {
-      return instances.get(id - 1);
-    } catch (IndexOutOfBoundsException e) {
-      return null;
+  @Override 
+  public boolean equals(Object otherCategory) {
+    if(!(otherCategory instanceof Category)) {
+      return false;
+    } else {
+      Category newCategory = (Category) otherCategory;
+      return this.getName().equals(newCategory.getName()) &&
+      this.getId() == newCategory.getId();
     }
   }
 
-  public ArrayList<Task> getTasks() {
-    return mTasks;
+  public String getName(){
+    return name;
   }
 
-  public void addTask(Task task) {
-    mTasks.add(task);
+  public int getId() {
+    return id;
   }
+
+  public static List<Category> all() {
+    try( Connection con = DB.sql2o.open()) {
+      String sql = "SELECT id, name FROM categories";
+      return con.createQuery(sql)
+        .executeAndFetch(Category.class);
+    }
+  }
+
+  public void save() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO categories (name) VALUES (:name)";
+      this.id = (int) con.createQuery(sql, true) 
+        .addParameter("name", this.name)
+        .executeUpdate()
+        .getKey();
+    }
+  }
+
+  // public ArrayList<Task> getTasks() {
+  //   return tasks;
+  // }
+
+  // public void addTask(Task task) {
+  //   mTasks.add(task);
+  // }
 }

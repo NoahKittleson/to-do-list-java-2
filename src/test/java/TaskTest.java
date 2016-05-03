@@ -11,11 +11,13 @@ public class TaskTest {
     DB.sql2o = new Sql2o("jdbc:postgresql://localhost:5432/to_do_test", null, null);
   }
 
-  @After 
+  @After
   public void tearDown() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "DELETE FROM tasks *";
-      con.createQuery(sql).executeUpdate();
+      String deleteTasksQuery = "DELETE FROM tasks *;";
+      String deleteCategoriesQuery = "DELETE FROM categories *;";
+      con.createQuery(deleteTasksQuery).executeUpdate();
+      con.createQuery(deleteCategoriesQuery).executeUpdate();
     }
   }
 
@@ -66,30 +68,17 @@ public class TaskTest {
     assertTrue(myTask.equals(savedTask));
   }
 
-  // @Test 
-  // public void Task_isCompleted_isFalseAfterInstantiation_false() {
-  //   Task testTask= new Task("Mow the lawn");
-  //   assertEquals(false, myTask.isCompleted());
-  // }
+  @Test 
+  public void Task_isCompleted_isFalseAfterInstantiation_false() {
+    Task testTask= new Task("Mow the lawn");
+    assertEquals(false, testTask.isCompleted());
+  }
 
-  // @Test 
-  // public void getCreatedAt_instantiatesWithCurrentTime_today() {
-  //   Task myTask = new Task("Mow the lawn");
-  //   assertEquals(LocalDateTime.now().getDayOfWeek(), myTask.getCreatedAt().getDayOfWeek());
-  // }
+  @Test 
+  public void getCreatedAt_instantiatesWithCurrentTime_today() {
+    Task myTask = new Task("Mow the lawn");
+    assertEquals(LocalDateTime.now().getDayOfWeek(), myTask.getCreatedAt().getDayOfWeek());
+  }
 
-  // @Test 
-  // public void all_returnsAllInstancesOfTask_true() {
-  //   Task firstTask = new Task("Mow the lawn");
-  //   Task secondTask = new Task("Buy groceries");
-  //   assertTrue(Task.all().contains(firstTask));
-  //   assertTrue(Task.all().contains(secondTask));
-  // }
 
-  // @Test
-  // public void clear_emptiedAllTasksFromArrayList_0() {
-  //   Task myTask = new Task("Mow the lawn");
-  //   Task.clear();
-  //   assertEquals(Task.all().size(), 0);
-  // }
 }
