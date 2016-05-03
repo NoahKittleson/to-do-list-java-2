@@ -58,13 +58,13 @@ public class CategoryTest {
     assertEquals(myCategory.getId(), savedCategory.getId());
   }
 
-  // @Test
-  // public void find_findCategoryInDatabase_true() {
-  //   Category myCategory = new Category("Household chores");
-  //   myCategory.save();
-  //   Category savedCategory = Category.find(myCategory.getId());
-  //   assertTrue(myCategory.equals(savedCategory));
-  // }
+  @Test
+  public void find_findCategoryInDatabase_true() {
+    Category myCategory = new Category("Household chores");
+    myCategory.save();
+    Category savedCategory = Category.find(myCategory.getId());
+    assertTrue(myCategory.equals(savedCategory));
+  }
 
   // ===========================================================
 

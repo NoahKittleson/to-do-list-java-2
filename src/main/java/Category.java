@@ -49,6 +49,15 @@ public class Category {
     }
   }
 
+  public static Category find(int id) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT * FROM categories WHERE id=:id";
+      return con.createQuery(sql)
+        .addParameter("id", id)
+        .executeAndFetchFirst(Category.class);
+    }
+  }
+
   // public ArrayList<Task> getTasks() {
   //   return tasks;
   // }
