@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="TaskTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2016-05-03T04:16:19" hostname="pauls-MacBook-Air.local" time="0.276">
+<testsuite name="TaskTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2016-05-03T04:26:48" hostname="pauls-MacBook-Air.local" time="0.305">
   <properties/>
-  <testcase name="equals_returnsTrueIfDescriptionsAretheSame" classname="TaskTest" time="0.117"/>
-  <testcase name="save_returnsTrueIfDescriptionsAretheSame" classname="TaskTest" time="0.098"/>
-  <testcase name="all_InstantiatesEmpty" classname="TaskTest" time="0.016"/>
+  <testcase name="equals_returnsTrueIfDescriptionsAretheSame" classname="TaskTest" time="0.155"/>
+  <testcase name="save_returnsTrueIfDescriptionsAretheSame" classname="TaskTest" time="0.096"/>
+  <testcase name="all_InstantiatesEmpty" classname="TaskTest" time="0.014"/>
   <testcase name="save_assignsIdToObject" classname="TaskTest" time="0.024"/>
-  <testcase name="Task_instantiatesCorrectly_true" classname="TaskTest" time="0.01"/>
-  <testcase name="Task_instantiatesWithDescription_String" classname="TaskTest" time="0.009"/>
+  <testcase name="Task_instantiatesCorrectly_true" classname="TaskTest" time="0.008"/>
+  <testcase name="Task_instantiatesWithDescription_String" classname="TaskTest" time="0.008"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
