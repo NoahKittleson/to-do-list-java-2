@@ -58,11 +58,12 @@ public class Category {
     }
   }
 
-  // public ArrayList<Task> getTasks() {
-  //   return tasks;
-  // }
-
-  // public void addTask(Task task) {
-  //   mTasks.add(task);
-  // }
+  public List<Task> getTasks() {
+    try(Connection con =  DB.sql2o.open()) {
+      String sql = "SELECT * FROM tasks WHERE categoryId=:id";
+      return con.createQuery(sql)
+        .addParameter("id", this.id)
+        .executeAndFetch(Task.class);
+    }
+  }
 }
