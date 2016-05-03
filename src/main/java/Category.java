@@ -5,11 +5,9 @@ import org.sql2o.*;
 public class Category {
   private String name;
   private int id;
-  // private ArrayList<Task> mTasks;
 
   public Category(String name) {
     this.name = name;
-    // mTasks = new ArrayList<Task>();
   }
 
   @Override 
