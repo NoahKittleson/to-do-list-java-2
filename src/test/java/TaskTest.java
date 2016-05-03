@@ -56,7 +56,15 @@ public class TaskTest {
     testTask.save();
     Task savedTask = Task.all().get(0);
     assertEquals(testTask.getId(), savedTask.getId());
-}
+  }
+
+  @Test
+  public void find_findsTaskInDatabase_true() {
+    Task myTask = new Task("Mow the lawn");
+    myTask.save();
+    Task savedTask = Task.find(myTask.getId());
+    assertTrue(myTask.equals(savedTask));
+  }
 
   // @Test 
   // public void Task_isCompleted_isFalseAfterInstantiation_false() {
