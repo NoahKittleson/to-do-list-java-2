@@ -84,5 +84,41 @@ public class App {
       return null;
     });
 
+    get("/tasks/:task_id/edit", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int taskId = Integer.parseInt(request.params("task_id"));
+      Task currentTask = Task.find(taskId);
+      model.put("task", currentTask);
+      model.put("template", "templates/edit_task.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/tasks/:task_id/edit", (request, response) -> {
+      int taskId = Integer.parseInt(request.params("task_id"));
+      Task currentTask = Task.find(taskId);
+      String description = request.queryParams("description");
+      currentTask.update(description);
+      response.redirect("/tasks/" + taskId);
+      return null;
+    });
+
+    get("/categories/:category_id/edit", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int categoryId = Integer.parseInt(request.params("category_id"));
+      Category currentCategory = Category.find(categoryId);
+      model.put("category", currentCategory);
+      model.put("template", "templates/edit_category.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/categories/:category_id/edit", (request, response) -> {
+      int categoryId = Integer.parseInt(request.params("category_id"));
+      Category currentCategory = Category.find(categoryId);
+      String name = request.queryParams("name");
+      currentCategory.update(name);
+      response.redirect("/categories/" + categoryId);
+      return null;
+    });
+
   }
 }

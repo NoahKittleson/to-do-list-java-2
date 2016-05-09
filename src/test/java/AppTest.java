@@ -91,4 +91,40 @@ public class AppTest extends FluentTest {
      assertThat(pageSource()).contains("<li>");
      assertThat(pageSource()).contains("Household chores");
    }
+
+   @Test
+   public void taskIsEdited() {
+     Task testTask = new Task("Scrub the bubbles");
+     testTask.save();
+     String url = String.format("http://localhost:4567/tasks/%d", testTask.getId());
+     goTo(url);
+     click("a", withText("Edit this task"));
+     fill("#description").with("fetch a bucket of steam");
+     submit(".btn");
+     assertThat(pageSource()).contains("fetch a bucket of steam");
+   }
+
+   @Test
+   public void categoryIsEdited () {
+     Category testCategory = new Category("Bubble chores");
+     testCategory.save();
+     String url = String.format("http://localhost:4567/categories/%d", testCategory.getId());
+     goTo(url);
+     click("a", withText("Edit this category"));
+     fill("#name").with("Non-Bubble chores");
+     submit(".btn");
+     assertThat(pageSource()).contains("Non-Bubble chores");
+   }
+
+   @Test
+   public void taskIsDeleted() {
+     Task testTask = new Task("Scrub the bubbles");
+     testTask.save();
+     String url = String.format("http://localhost:4567/tasks/%d", testTask.getId());
+     goTo(url);
+     click("a", withText("Edit this task"));
+    //  submit("#deleteButton");
+    //  goTo("http://localhost:4567/tasks/");
+     assertThat(pageSource()).doesNotContain("Scrub the bubbles");
+   }
 }
