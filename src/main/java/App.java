@@ -120,5 +120,40 @@ public class App {
       return null;
     });
 
+    post("/tasks/:task_id/delete", (request, response) -> {
+      int taskId = Integer.parseInt(request.params("task_id"));
+      Task currentTask = Task.find(taskId);
+      currentTask.delete();
+      response.redirect("/tasks");
+      return null;
+    });
+
+    post("/categories/:category_id/delete", (request, response) -> {
+      int categoryId = Integer.parseInt(request.params("category_id"));
+      Category currentCategory = Category.find(categoryId);
+      currentCategory.delete();
+      response.redirect("/categories");
+      return null;
+    });
+
+    post("/tasks/:task_id/complete", (request, response) -> {
+      int taskId = Integer.parseInt(request.params("task_id"));
+      Task currentTask = Task.find(taskId);
+      currentTask.setComplete();
+      response.redirect("/tasks/" + taskId);
+      return null;
+    });
+
+    post("/tasks/:task_id/upDATE", (request, response) -> {
+      int taskId = Integer.parseInt(request.params("task_id"));
+      Task currentTask = Task.find(taskId);
+      String date = request.queryParams("date");
+      System.out.println(date);
+      currentTask.setDueDate(date);
+      response.redirect("/tasks/" + taskId);
+      return null;
+    });
+
+
   }
 }

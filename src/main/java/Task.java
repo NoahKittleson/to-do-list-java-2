@@ -1,17 +1,42 @@
 import java.util.List;
 import java.util.ArrayList;
 import org.sql2o.*;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class Task {
   private int id;
   private String description;
+  private boolean completed;
+  private String dueDate;
 
   public Task(String description) {
     this.description = description;
+    this.completed = false;
+    this.dueDate = "no due date set";
+  }
+
+
+  public void setDueDate(String newDueDate) {
+      try(Connection con = DB.sql2o.open()) {
+        String sql = "UPDATE tasks SET dueDate=:dueDate WHERE id=:id";
+        con.createQuery(sql)
+          .addParameter("dueDate", newDueDate)
+          .addParameter("id", this.id)
+          .executeUpdate();
+      }
+  }
+
+  public String getDueDate() {
+    return dueDate;
   }
 
   public String getDescription() {
     return description;
+  }
+
+  public boolean getCompletion() {
+    return completed;
   }
 
   public int getId() {
@@ -19,7 +44,7 @@ public class Task {
   }
 
   public static List<Task> all() {
-    String sql = "SELECT id, description FROM tasks";
+    String sql = "SELECT id, description, completed, dueDate FROM tasks";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Task.class);
     }
@@ -32,15 +57,18 @@ public class Task {
     } else {
       Task newTask = (Task) otherTask;
       return this.getDescription().equals(newTask.getDescription()) &&
-             this.getId() == newTask.getId();
+             this.getId() == newTask.getId() &&
+             this.getCompletion() == newTask.getCompletion();
     }
   }
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO tasks(description) VALUES (:description)";
+      String sql = "INSERT INTO tasks(description, completed, dueDate) VALUES (:description, :completed, :dueDate)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("description", this.description)
+        .addParameter("completed", this.completed)
+        .addParameter("dueDate", this.dueDate)
         .executeUpdate()
         .getKey();
     }
@@ -53,6 +81,18 @@ public class Task {
         .addParameter("id", id)
         .executeAndFetchFirst(Task.class);
       return task;
+    }
+  }
+
+  public void setComplete() {
+    this.completed = true;
+    try(Connection con = DB.sql2o.open()) {
+
+      String sql = "UPDATE tasks SET completed = :completed WHERE id = :id";
+      con.createQuery(sql)
+        .addParameter("completed", true)
+        .addParameter("id", this.id)
+        .executeUpdate();
     }
   }
 

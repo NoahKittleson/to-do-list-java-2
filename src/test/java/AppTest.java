@@ -7,6 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.fluentlenium.core.filter.FilterConstructor.*;
+import org.fluentlenium.assertj.custom.*;
+import java.util.Date;
+
 
 public class AppTest extends FluentTest {
   public WebDriver webDriver = new HtmlUnitDriver();
@@ -120,11 +123,50 @@ public class AppTest extends FluentTest {
    public void taskIsDeleted() {
      Task testTask = new Task("Scrub the bubbles");
      testTask.save();
+     Category testCategory = new Category("Bubble chores");
+     testCategory.save();
+     testTask.addCategory(testCategory);
      String url = String.format("http://localhost:4567/tasks/%d", testTask.getId());
      goTo(url);
      click("a", withText("Edit this task"));
-    //  submit("#deleteButton");
-    //  goTo("http://localhost:4567/tasks/");
+     submit("#deleteButton");
+     goTo(String.format("http://localhost:4567/categories/%d", testCategory.getId()));
      assertThat(pageSource()).doesNotContain("Scrub the bubbles");
+   }
+
+   @Test
+   public void categoryIsDeleted() {
+     Task testTask = new Task("Scrub the bubbles");
+     testTask.save();
+     Category testCategory = new Category("Bubble chores");
+     testCategory.save();
+     testCategory.addTask(testTask);
+     String url = String.format("http://localhost:4567/categories/%d", testCategory.getId());
+     goTo(url);
+     click("a", withText("Edit this category"));
+     submit("#deleteButton");
+     goTo(String.format("http://localhost:4567/tasks/%d", testTask.getId()));
+     assertThat(pageSource()).doesNotContain("Bubble chores");
+   }
+
+   @Test
+   public void taskSetToComplete() {
+     Task testTask = new Task("Scrub the bubbles");
+     testTask.save();
+     testTask.setComplete();
+     String url = String.format("http://localhost:4567/tasks/%d", testTask.getId());
+     goTo(url);
+     assertThat(pageSource()).contains("glyphicon-ok");
+   }
+
+   @Test
+   public void giveTaskADueDate () {
+     Task testTask = new Task("Scrub the bubbles");
+     testTask.save();
+
+     testTask.setDueDate("20160509");
+     String url = String.format("http://localhost:4567/tasks/%d", testTask.getId());
+     goTo(url);
+     assertThat(pageSource()).contains("2016");
    }
 }

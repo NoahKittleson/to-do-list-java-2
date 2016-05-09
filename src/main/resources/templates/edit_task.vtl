@@ -3,3 +3,20 @@
   <input id="description" name="description" type="text">
   <button type="submit" class="btn btn-success">Add Task</button>
 </form>
+
+<form action="/tasks/$task.getId()/upDATE" method="post">
+  <div class="form-group">
+    <label for="date">Due Date:</label>
+    <input id="date" class="form-control" type="date">
+  </div>
+  <button type="submit" id="dateButton">Add Duedate</button>
+</form>
+
+
+<form action="/tasks/$task.getId()/delete" method="post">
+  <button  type="submit" id="deleteButton">Delete this task</button>
+</form>
+
+<form action="/tasks/$task.getId()/complete" method="post">
+  <button  type="submit" id="completeButton">Set to complete</button>
+</form>

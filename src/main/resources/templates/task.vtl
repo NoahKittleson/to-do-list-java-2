@@ -1,4 +1,8 @@
-<h1>$task.getDescription()</h1>
+<h1>$task.getDescription()
+  #if ($task.getCompletion())
+    <span class=" glyphicon glyphicon-ok"></span>
+  #end
+</h1>
 
 #if($task.getCategories())
   <p>Here are the categories for this task:</p>

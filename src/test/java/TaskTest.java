@@ -2,6 +2,8 @@ import org.sql2o.*;
 import org.junit.*;
 import java.util.List;
 import static org.junit.Assert.*;
+import java.util.Date;
+import java.sql.Timestamp;
 
 public class TaskTest {
 
@@ -103,6 +105,32 @@ public class TaskTest {
     myTask.addCategory(myCategory);
     myTask.delete();
     assertEquals(0, myCategory.getTasks().size());
+  }
+
+  @Test
+  public void setComplete_setsTaskToCompleted() {
+    Task myTask = new Task("Mow the lawn");
+    myTask.save();
+    myTask.setComplete();
+    Task updatedTask = Task.find(myTask.getId());
+    assertEquals(true, updatedTask.getCompletion());
+  }
+
+  @Test
+  public void getDueDate_instantiatesWithNullTimestamp_null() {
+    Task testTask = new Task("fuzz the fizzles");
+    testTask.save();
+    assertEquals(testTask.getDueDate(), "no due date set");
+  }
+
+  @Test
+  public void setDueDate_setsDueDateProperty_Timestamp() {
+    Task testTask = new Task("fuzz the fizzles");
+    testTask.save();
+    String newDate = "20160509";
+    testTask.setDueDate(newDate);
+    Task updatedTask = Task.find(testTask.getId());
+    assertEquals(updatedTask.getDueDate(), newDate);
   }
 
 }
